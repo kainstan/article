@@ -472,19 +472,7 @@ group nobody
 
 ## 需要注意的几点：
 
-### 1，需要进行路由转发，不然连接了没有网络。同时需要进行永久保存
-
-```
-# 需要先进行安装这个服务，不然重启无效
-yum -y install iptables-services
-systemctl start iptables.service
-systemctl enable iptables.service
-iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
-iptables-save
-systemctl restart iptables
-```
-
-### 2，需要删掉下面这些加密选项（服务端和客户端都需要进行删除）
+### 1，需要删掉下面这些加密选项（服务端和客户端都需要进行删除）
 
 ```
 # server 不要添加下面这个内容，否则容易出现tls验证错误
