@@ -454,7 +454,7 @@ ca /path/to/ca.crt
 cert /path/to/client.crt
 key /path/to/client.key
 tls-crypt /path/to/myvpn.tlsauth
-remote-cert-eku "TLS Web Client Authentication"  # 客户端不建议加这个选项，会导致tls证书验证错误
+remote-cert-eku "TLS Web Server Authentication"  # 客户端不建议加这个选项，会导致tls证书验证错误
 proto udp
 remote your_server_ip 1194 udp
 dev tun
@@ -472,14 +472,32 @@ group nobody
 
 ## 需要注意的几点：
 
-### 1，需要删掉下面这些加密选项（服务端和客户端都需要进行删除）
+### 1，如果不需要加密，可以删掉这行（服务端和客户端都需要进行删除）
 
 ```
-# server 不要添加下面这个内容，否则容易出现tls验证错误
+# server 删除
 remote-cert-eku "TLS Web Client Authentication"
 
 # client 删除
-remote-cert-eku "TLS Web Client Authentication"
+remote-cert-eku "TLS Web Server Authentication"
+```
+
+### 2，udp改tcp，如果出现客户端无法连接服务端，需要开放其协议和端口
+
+```
+# 去掉server.conf里面的#explicit-exit-notify
+#explicit-exit-notify  # 这个地方需要注释或者删掉，不然无法使用tcp
+
+# 同时server.conf & client.conf里面的udp都改成tcp
+
+# 如果出现客户端连接不上服务端，可以查看防火墙相应的端口和协议是否对外开放
+# 查询端口是否开放
+firewall-cmd --query-port=1194/udp
+# 移除上述规则
+firewall-cmd --permanent --remove-port=1194/udp
+# 新建永久规则，批量开放一段端口（TCP协议）
+firewall-cmd --permanent --add-port=9001-9100/tcp
+firewall-cmd --permanent --add-port=1194/tcp
 ```
 
 
