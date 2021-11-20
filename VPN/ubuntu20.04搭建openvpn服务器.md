@@ -605,6 +605,7 @@ ss -tnal
 # modified the sysctl.conf and make net.ipv4.ip_forward=1
 sudo vim /etc/sysctl.conf
 sudo iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o enp6s0 -j MASQUERADE
+sudo iptables-save > /etc/iptables.up.rules
 ```
 
 5, Copy the openvpn client files, edit the client.ovpn, and startup the openvpn client (that's you need  `name.crt name.key name.ovpn ca.crt`)
