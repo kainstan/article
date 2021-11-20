@@ -606,6 +606,15 @@ ss -tnal
 sudo vim /etc/sysctl.conf
 sudo iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o enp6s0 -j MASQUERADE
 sudo iptables-save > /etc/iptables.up.rules
+
+# 此时需要注意防火墙可能没有对你所添加的端口以及协议开放，会导致客户端连接不上服务端。
+# 最简单的方法就是关闭防火墙，但是也会存在相应的风险。
+# 关闭防火墙
+sudo ufw disable 
+# 开启防火墙
+sudo ufw enable
+# 防火墙状态
+sudo ufw status
 ```
 
 5, Copy the openvpn client files, edit the client.ovpn, and startup the openvpn client (that's you need  `name.crt name.key name.ovpn ca.crt`)
