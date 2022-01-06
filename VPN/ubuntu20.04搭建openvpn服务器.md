@@ -256,7 +256,7 @@ export KEY_NAME="vpnilanni"
 ./easyrsa gen-dh
 
 cd ..
-cp /usr/share/doc/openvpn/examples/sample-config-fils/server.conf.gz ./
+cp /usr/share/doc/openvpn/examples/sample-config-files/server.conf.gz ./
 gzip -d server.conf.gz
 
 cp easy-rsa/pki/ca.crt ./
