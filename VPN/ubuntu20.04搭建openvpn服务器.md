@@ -604,6 +604,8 @@ ss -tnal
 # Notice: if you need route the flow you can do like this, or please ignore.
 # modified the sysctl.conf and make net.ipv4.ip_forward=1
 sudo vim /etc/sysctl.conf
+# 这个地方需要注意一下，在阿里云上可能需要使用如下指令，因为公网地址没有对应的网卡
+（sudo iptables -t nat -A POSTROUTING -s 10.8.11.0/24 -j MASQUERADE）
 sudo iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o enp6s0 -j MASQUERADE
 sudo iptables-save > /etc/iptables.up.rules
 
