@@ -50,7 +50,7 @@ edit_server_conf(){
 startup_config(){
   nohup openvpn --config /etc/openvpn/server.conf &
   echo 'net.ipv4.ip_forward=1' >> /etc/sysctl.conf
-  iptables -t nat -A POSTROUTING -s 10.8.16.0/24 -j MASQUERADE
+  ptables -t nat -A POSTROUTING -s 10.8.16.0/24 -o eth0 -j MASQUERADE
   iptables-save > /etc/iptables.up.rules
 }
 
