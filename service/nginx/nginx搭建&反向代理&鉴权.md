@@ -17,7 +17,12 @@ docker pull nignx
 启动的时候需要挂在虚拟目录，方便对nginx的配置文件进行管理
 
 ```
-docker run -d -p 80:80 -p 7722:22 --restart always --name nginx-forward -v /root/docker_dir/nginx/www:/usr/share/nginx/html -v /root/docker_dir/nginx/conf/nginx.conf:/etc/nginx/nginx.conf -v /root/docker_dir/nginx/logs:/var/log/nginx -v /root/docker_dir/nginx/conf/conf.d:/etc/nginx/conf.d nginx
+docker run -d -p 80:80 -p 7722:22 --restart always --name nginx-forward \ 
+-v /root/docker_dir/nginx/www:/usr/share/nginx/html \
+-v /root/docker_dir/nginx/conf/nginx.conf:/etc/nginx/nginx.conf \
+-v /root/docker_dir/nginx/logs:/var/log/nginx \
+-v /root/docker_dir/nginx/conf/conf.d:/etc/nginx/conf.d \
+nginx
 ```
 
 `-v`表示要挂载的目录，:前面是宿主机的文件路径，:后面是容器内部文件的真实路径。
