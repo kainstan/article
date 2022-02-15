@@ -605,7 +605,7 @@ ss -tnal
 # modified the sysctl.conf and make net.ipv4.ip_forward=1
 sudo vim /etc/sysctl.conf
 # 这个地方需要注意一下，在阿里云上可能需要使用如下指令，因为公网地址没有对应的网卡，可按照下面括号填写。
-（ptables -t nat -A POSTROUTING -s 10.8.16.0/24 -o eth0 -j MASQUERADE）
+（iptables -t nat -A POSTROUTING -s 10.8.16.0/24 -o eth0 -j MASQUERADE）
 sudo iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o enp6s0 -j MASQUERADE
 sudo iptables-save > /etc/iptables.up.rules
 
@@ -618,6 +618,21 @@ sudo ufw enable
 # 防火墙状态
 sudo ufw status
 ```
+
+<font color="red">注意：当vpn使用一段时间之后可能会出现客户端连不上服务端的问题，如下：</font>
+
+```
+⏎[Feb 15, 2022, 22:26:20] Server poll timeout, trying next remote entry...
+⏎[Feb 15, 2022, 22:26:20] EVENT: RECONNECTING ⏎[Feb 15, 2022, 22:26:20] EVENT: WAIT 
+⏎[Feb 15, 2022, 22:26:20] UnixCommandAgent: transmitting bypass route to /var/run/agent_ovpnconnect.sock
+{
+	"host" : "*.*.*.*",
+	"ipv6" : false,
+	"pid" : 828
+}
+```
+
+<font color="red">这个时候可能是端口被封了，可以尝试换一个端口。如果换了端口能成功连上，但是没法连接互联网，这个时候需要重新执行一下这个指令`iptables -t nat -A POSTROUTING -s 10.8.16.0/24 -o eth0 -j MASQUERADE`</font>
 
 5, Copy the openvpn client files, edit the client.ovpn, and startup the openvpn client (that's you need  `name.crt name.key name.ovpn ca.crt`)
 
