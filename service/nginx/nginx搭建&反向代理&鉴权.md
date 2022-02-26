@@ -77,6 +77,8 @@ default.conf http  tcp
 
 <font color="#1E90FF">http协议编写方式：</font>
 
+<font color="red">注意：如果是http和websocket混合的模式，则需要加上支持的字段。下面以注释方式进行说明。</font>
+
 ```
 # 进入http文件夹，编辑http.conf文件。例如反向代理test.trip-service.com这个域名
 # 浏览器会根据test.trip-service.com转发到54.221.78.73:80这个地址
@@ -89,6 +91,12 @@ server {
     server_name test.trip-service.com;
     location / {
         proxy_pass http://test;
+        
+        # 下面是需要进行ws通信的条件，如果是http+websocket协议，则必须加上
+        #proxy_set_header Host $host;
+        #proxy_http_version 1.1;
+        #proxy_set_header Upgrade $http_upgrade;
+        #proxy_set_header Connection "Upgrade";
     }
 }
 ```
@@ -105,6 +113,20 @@ server {
     proxy_pass gitlab_ssh_server;
 }
 ```
+
+<font color="#1E90FF">WebSocket协议编写方式：</font>
+
+```
+location /wsapp/ {
+    proxy_pass http://wsbackend;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "Upgrade";
+    proxy_set_header Host $host;
+}
+```
+
+
 
 
 
